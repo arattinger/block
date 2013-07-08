@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Overview{% endblock %}
+{% block head %}
+    {{ super() }}
+	<link href="../static/css/podlove-web-player.css" media="screen" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="../static/js/html5shiv.js"></script>
+	<script type="text/javascript" src="../static/js/podlove-web-player.js"></script>
+{% endblock %}
+{% block content %}
+	<div><span id="title">{{ title }}</span></div>
+	<br>
+	<div id="episodes">
+		{% for episode in episodes %}
+		<div class="episode">
+		<h1><a href="{{ episode.uuid}}.html">{{ episode.metadata.title }}</a></h1>
+		<div>{{ episode.metadata.subtitle }}</div>
+        <p>
+		<audio id="{{ episode.uuid }}">
+		</audio>
+		<script>
+			$('#{{ episode.uuid }}').podlovewebplayer({
+				poster: '../static/images/cover.jpg',
+				title: '{{ episode.metadata.title }}',
+				permalink: 'http://podlove.github.com/podlove-web-player/standalone.html',
+				subtitle: '{{ episode.metadata.subtitle }}',
+				summary: 'Sample Summary',
+				duration: '{{ episode.length_timestring }}',
+				alwaysShowHours: true,
+				startVolume: 0.8,
+				width: 'auto',
+				summaryVisible: false,
+				timecontrolsVisible: false,
+				sharebuttonsVisible: false,
+				chaptersVisible: false
+			});
+		</script>
+		</p>
+		{% endfor %}
+		</div>
+	</div>
+	<p class="important">
+	  Created by ...
+	</p>
+{% endblock %}

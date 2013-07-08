@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Overview{% endblock %}
+{% block head %}
+  {{ super() }}
+  <link href="../static/css/podlove-web-player.css" media="screen" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../static/js/html5shiv.js"></script>
+  <script type="text/javascript" src="../static/js/podlove-web-player.js"></script>
+{% endblock %}
+{% block content %}
+  <h1>{{ episode.metadata.title }}</h1>
+  <div><span id="title">{{ episode.metadata.summary }}</span></div>
+  <br>
+  <p>
+		<audio id="testplayer1">
+			{% for file in audio_files %}
+			<source src="{{ file.href }}" type="{{ file.mime_type }}"></source>
+			{% endfor %}
+		</audio>
+
+		<script>
+			$('#testplayer1').podlovewebplayer({
+				poster: '../static/images/cover.jpg',
+				title: '{{ episode.metadata.title }}',
+				permalink: 'http://podlove.github.com/podlove-web-player/standalone.html',
+				subtitle: '{{ episode.metadata.subtitle }}',
+				chapters: {{ chapters }},
+				summary: '{{ episode.metadata.summary }}',
+				downloads: [{"name": "MPEG-1 Audio Layer III (MP3) High Quality","size": 58725,"url": "samples/podlove-test-track.mp3","dlurl": "samples/podlove-test-track.mp3"},{"name": "ogg","size": 50494,"url": "samples/podlove-test-track.ogg","dlurl": "samples/podlove-test-track.mp3"},{"name": "mp4","size": 78328,"url": "samples/podlove-test-track.mp4","dlurl": "samples/podlove-test-track.mp4"},{"name": "opus","size": 37314,"url": "samples/podlove-test-track.opus","dlurl": "samples/podlove-test-track.opus"}],
+				duration: '{{ episode.length_timestring }}',
+				alwaysShowHours: true,
+				startVolume: 0.8,
+				width: 'auto',
+				summaryVisible: false,
+				timecontrolsVisible: false,
+				sharebuttonsVisible: false,
+				chaptersVisible: true
+			});
+		</script>
+	</p>
+
+	   <!--  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'isquertzer'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a> -->
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-comments" data-href="http://example.com" data-width="470" data-num-posts="10"></div>
+
+
+{% endblock %}
