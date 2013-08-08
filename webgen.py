@@ -34,7 +34,11 @@ def main(argv):
     for episode in episodes:
         create_episode(env, episode, result_template_dir)
 
-    create_static_page(env, result_template_dir, 'about.html')
+    about_data = {
+        'about_title': settings.AUDIOBLOG_ABOUT_TITLE,
+        'about_description': settings.AUDIOBLOG_ABOUT,
+    }
+    create_static_page(env, result_template_dir, 'about.html', about_data)
     if argv[0] == "init":
         # copy css javascript etc.
         result_static_dir = join(website_path, "static")
@@ -103,9 +107,9 @@ def create_overview(env, episodes, result_template_dir):
     overview.close()
 
 
-def create_static_page(env, result_template_dir, html):
+def create_static_page(env, result_template_dir, html, data):
     template = env.get_template(html)
-    rendered = template.render()
+    rendered = template.render(data)
     overview = open(join(result_template_dir, html), 'wb')
     overview.write(rendered.encode('utf-8'))
     overview.close()
