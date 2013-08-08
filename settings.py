@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import os.path
 
-PODCAST_NAME = u"The Official Auphonic Podcast"
+AUDIOBLOG_NAME = u"The Auphonic Podcast"
+AUDIOBLOG_DESCRIPTION = u"This is a sample page that could contain an actual \
+    version of a podcast. Not much here for now, other than a sample generator"
 
 MEDIA_SERVER_UUIDS = ['vGUwu8EpuDRbYTDkDQ8F3Y', 'MyLByn5yWZyCQeSd9x3qAn']
 

@@ -4,31 +4,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" />
 <head>
   {% block head %}
-  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>{% block title %}{% endblock %}</title>
-  <link href="../static/css/base.css" media="screen" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="../static/js/base.js"></script>
-  <script type="text/javascript" src="../static/js/jquery-1.9.1.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../static/css/jumbotron-narrow.css" rel="stylesheet">
+
+    <script type="text/javascript" src="../static/js/base.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-1.9.1.min.js"></script>
+
   {% endblock %}
 </head>
 
 <body>
-  <div id="content">
-    <img src="../static/images/header.png" width="1000" height="250" alt="">
-      <nav id="access" role="navigation">
-        <div class="menu-main-container"><ul id="menu-main" class="menu"><li id="menu-item-3990" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-3990"><a href="overview.html">Podcast</a></li>
-        <li id="menu-item-3988" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3988"><a href="about.html">About</a></li>
-        <li id="menu-item-3984" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3984"><a href="subscribe.html">Subscribe</a></li>
-        <li id="menu-item-3989" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3989"><a href="archive.html">Archive</a></li>
-        <li id="menu-item-4009" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4009"><a href="contact.html">Contact</a></li>
-        <li id="menu-item-3987" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3987"><a href="impressum.html">Impressum</a></li>
-        <li id="menu-item-3987" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3987"><a href="https://github.com/arattinger/pod-webgen">github</a></li>
-        </ul></div>     </nav>
-    <div id="main-content">
-    {% block content %}{% endblock %}
-    <br>
-    <br>
-    <br>
-    </div>
-  </div>
+
+  <div class="container-narrow">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="{% block active_overview %}{% endblock %}"><a href="overview.html">Home</a></li>
+          <li class="{% block active_about %}{% endblock %}"><a href="about.html">About</a></li>
+          <li><a href="#">Subscribe</a></li>
+          <li><a href="#">Contact</a></li>
+          <li class="{% block active_impressum  %}{% endblock %}"><a href="#">Impressum</a></li>
+          <li><a href="#">github</a></li>
+        </ul>
+
+        <h3 class="text-muted">Dynamod</h3>
+      </div>
+
+
+      {% block content %}{% endblock %}
+      <div class="footer">
+        <p>&copy; Company 2013</p>
+      </div>
+
+    </div> <!-- /container -->
+  <script src="../static/js/bootstrap.min.js"></script>
 </body>

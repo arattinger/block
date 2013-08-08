@@ -19,6 +19,8 @@ def main(argv):
     env = Environment(loader=FileSystemLoader(settings.TEMPLATES))
     episodes = get_episodes()
 
+    # Possible arguments aren't really complex enough to need
+    # an argument parser
     if len(argv) < 2:
         print "Not enough command line arguments"
         return
@@ -94,7 +96,8 @@ def create_episode(env, episode, result_template_dir):
 
 def create_overview(env, episodes, result_template_dir):
     template = env.get_template('overview.html')
-    rendered = template.render(episodes=episodes, title=settings.PODCAST_NAME)
+    rendered = template.render(episodes=episodes, title=settings.AUDIOBLOG_NAME,
+        description=settings.AUDIOBLOG_DESCRIPTION)
     overview = open(join(result_template_dir, 'overview.html'), 'wb')
     overview.write(rendered.encode('utf-8'))
     overview.close()
