@@ -1,5 +1,8 @@
-pod-webgen
-==========
+block
+=====
+
+A python static site generator specialized on audio web sites.
+
 
 Usage:
 
