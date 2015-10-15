@@ -1,10 +1,18 @@
+from docutils.core import publish_parts
+
 
 class RSTParser():
 
-    def __init__():
-        pass
+    def __init__(self, path):
+        self.data = ""
+        with open(path) as f:
+            self.data = f.read()
 
+    def parse(self):
+        self.parsed_data = publish_parts(
+            self.data, writer_name="html")['html_body']
+        return self.parsed_data
 
-if __name__ == '__main__':
-    parser = RSTParser()
-    print('parsing finished')
+# if __name__ == '__main__':
+    # parser = RSTParser()
+    # print('parsing finished')
