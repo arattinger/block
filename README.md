@@ -1,7 +1,7 @@
 block
 =====
 
-A python static site generator specialized on audio web sites.
+A python 3 static site generator specialized on audio web sites.
 
 
 Usage:
