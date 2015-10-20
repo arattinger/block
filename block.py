@@ -8,6 +8,9 @@ VERBOSE = False
 
 
 def log(status, verbose_output=False):
+    """ Simple log function that prints when the global variable VERBOSITY is
+    set to True, or verbose_output=True is passed.
+    """
     if verbose_output or VERBOSE:
         print(status)
 
@@ -42,9 +45,17 @@ def parse_arguments():
 
 
 def copy_templates(source, destination):
+    """ Copies a source directory to a destination.
+    """
     if not os.path.exists(destination):
         os.makedirs(destination)
     copytree(source, destination)
+
+
+def generate_site(source):
+    """ Generates the finished site from the content and assets the user specified
+    """
+    pass
 
 
 def main():
@@ -54,11 +65,16 @@ def main():
         log("Verbose output enabled")
 
     if args.init:
+        # Initialize the templates and folders used for the static website
         log('Attempting to create the template directories in the specified location',
             verbose_output=True)
         real_path = os.path.dirname(os.path.realpath(__file__))
         # print(real_path, args.init)
         copy_templates(os.path.join(real_path, 'project_template'), args.init)
+
+    elif args.generate:
+        # Generate a finished site from the content specified by the user
+        generate_site(args.generate)
 
     log(args)
     # import pdb; pdb.set_trace()
