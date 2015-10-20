@@ -5,7 +5,10 @@ A python 3 static site generator specialized on audio web sites.
 
 
 Usage:
+------
 
-Initalization of a new website:
+Start by initiating a new site:
 
-python webgen.py init [ absolute_path ]
+python block.py --init [ absolute_path ]
+
+The newly created directory contains all the files you need to get started.
