@@ -32,7 +32,12 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description=DESCRIPTION)
     parser.add_argument("-v", "--verbose", help="increase output verbosity",
                         action="store_true")
-    parser.add_argument("--init", help="Create a new static site")
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-i", "--init", help="Create a new static site",
+                       metavar="absolute_path")
+    group.add_argument("-g", "--generate", help="Generate the static website \
+        from your source files", metavar="project_path")
     return parser.parse_args()
 
 
