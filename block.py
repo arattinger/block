@@ -59,6 +59,33 @@ def copy_templates(source, destination):
     log("Finished copying files!", verbose_output=True)
 
 
+def write_template(source, page, target, config):
+    with open(os.path.join(source, config[page]['template_path']), 'r') as f:
+        landing = f.read()
+
+    landing_template = Template(landing)
+    landing_result = landing_template.render({
+        'title': config['title'],
+        'description': config['description'],
+        'author': config['author'],
+        'sitename': config['sitename'],
+        'content': "This is just a test",
+        'nav_items': [],
+    })
+
+    with open(os.path.join(source, target), 'w') as f:
+        f.write(landing_result)
+
+
+def write_templates(source, config):
+    # 1. Write the landing page
+    write_template(source, 'home', 'site/index.html', config)
+
+    # TODO
+    # 2. Create all other pages
+    # 3. Copy referenced files
+
+
 def generate_site(source):
     """ Generates the finished site from the content and assets the user specified
     """
@@ -77,22 +104,8 @@ def generate_site(source):
             import traceback
             traceback.print_exc()
 
-    # import pdb; pdb.set_trace()
     # Parse landing page
-    with open(os.path.join(source, config['home']), 'r') as f:
-        landing = f.read()
-
-    landing_template = Template(landing)
-    landing_result = landing_template.render({
-        'title': config['title'],
-        'description': config['description'],
-        'author': config['author'],
-        'sitename': config['sitename'],
-        'content': "This is just a test",
-    })
-
-    with open(os.path.join(source, 'site/index.html'), 'w') as f:
-        f.write(landing_result)
+    write_templates(source, config)
 
     log("Done generating your website!", verbose_output=True)
 
