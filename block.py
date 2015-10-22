@@ -1,17 +1,23 @@
 import argparse
 import os
 import shutil
+from ast import literal_eval
+from jinja2 import Template
+
 
 DESCRIPTION = "Block: Easily generate your static site in seconds."
 
-VERBOSE = False
+settings = {
+    'VERBOSE': False,
+    'DEBUG': True,
+}
 
 
 def log(status, verbose_output=False):
     """ Simple log function that prints when the global variable VERBOSITY is
     set to True, or verbose_output=True is passed.
     """
-    if verbose_output or VERBOSE:
+    if verbose_output or settings['VERBOSE']:
         print(status)
 
 
@@ -50,23 +56,57 @@ def copy_templates(source, destination):
     if not os.path.exists(destination):
         os.makedirs(destination)
     copytree(source, destination)
+    log("Finished copying files!", verbose_output=True)
 
 
 def generate_site(source):
     """ Generates the finished site from the content and assets the user specified
     """
-    pass
+    try:
+        # We are starting by reading from main.config
+        config = None
+        with open(os.path.join(source, 'main.config'), 'r') as f:
+            config = f.read()
+
+        # This parsing method should be safer than a normal eval
+        config = literal_eval(config)
+    except:
+        log('Something went wrong while parsing, please check main.config',
+            verbose_output=True)
+        if settings['DEBUG']:
+            import traceback
+            traceback.print_exc()
+
+    # import pdb; pdb.set_trace()
+    # Parse landing page
+    with open(os.path.join(source, config['home']), 'r') as f:
+        landing = f.read()
+
+    landing_template = Template(landing)
+    landing_result = landing_template.render({
+        'title': config['title'],
+        'description': config['description'],
+        'author': config['author'],
+        'sitename': config['sitename'],
+        'content': "This is just a test",
+    })
+
+    with open(os.path.join(source, 'site/index.html'), 'w') as f:
+        f.write(landing_result)
+
+    log("Done generating your website!", verbose_output=True)
 
 
 def main():
     args = parse_arguments()
     if args.verbose:
-        VERBOSE = True
+        settings['VERBOSE'] = True
         log("Verbose output enabled")
 
     if args.init:
         # Initialize the templates and folders used for the static website
-        log('Attempting to create the template directories in the specified location',
+        log('Attempting to create the template directories ' +
+            'in the specified location',
             verbose_output=True)
         real_path = os.path.dirname(os.path.realpath(__file__))
         # print(real_path, args.init)
