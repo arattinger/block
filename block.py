@@ -79,7 +79,13 @@ def copy_static_files(source, config):
     copy_from = os.path.join(source, 'assets')
     destination = os.path.join(source, 'site/assets')
 
-    shutil.rmtree(destination)
+    try:
+        shutil.rmtree(destination)
+    except FileNotFoundError:
+        # This should happen the first time we run -g as there is nothing
+        # to delete yet
+        pass
+
     copytree1(copy_from, destination)
 
 
@@ -115,7 +121,10 @@ def write_templates(source, config):
 
     # TODO
     # 2. Create all other pages
-    # 3. Copy referenced files
+    for page in config['pages']:
+        # An Interface change in write_template is needed to implement this
+        # write_template(source, )
+        pass
 
 
 def generate_site(source):
