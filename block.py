@@ -60,6 +60,23 @@ def copy_templates(source, destination):
     log("Finished copying files!", verbose_output=True)
 
 
+def copy_file_list(source, source_list, destination):
+    destination = os.path.join(source, destination)
+    if not os.path.exists(destination):
+        os.makedirs(destination)
+    for f in source_list:
+        shutil.copy2(os.path.join(source, f), destination)
+
+
+def copy_static_files(source, config):
+    copy_file_list(source, config['css_files'],
+                   os.path.join(source, 'site/css_files'))
+    copy_file_list(source, config['scripts_header'],
+                   os.path.join(source, 'site/scrips_header'))
+    copy_file_list(source, config['scripts_body'],
+                   os.path.join(source, 'site/scripts_body'))
+
+
 def write_template(source, page, target, config):
     print("Writing", target)
     with open(os.path.join(source, config[page]['template_path']), 'r') as f:
@@ -113,8 +130,13 @@ def generate_site(source):
             import traceback
             traceback.print_exc()
 
+    log("Generating Templates...", verbose_output=True)
     # Parse landing page
     write_templates(source, config)
+
+    log("Copying static files...", verbose_output=True)
+
+    copy_static_files(source, config)
 
     log("Done generating your website!", verbose_output=True)
 
