@@ -22,7 +22,7 @@ def log(status, verbose_output=False):
         print(status)
 
 
-def copytree(src, dst, symlinks=False, ignore=None):
+def copytree1(src, dst, symlinks=False, ignore=None):
     """ This is an improved implementation for copytree (shutil), and is
     used as workaround for the copytree limitation where it doesn't copy
     anything if the dir exists.
@@ -56,25 +56,13 @@ def copy_templates(source, destination):
     """
     if not os.path.exists(destination):
         os.makedirs(destination)
-    copytree(source, destination)
+    copytree1(source, destination)
     log("Finished copying files!", verbose_output=True)
 
 
-def copy_file_list(source, source_list, destination):
-    destination = os.path.join(source, destination)
-    if not os.path.exists(destination):
-        os.makedirs(destination)
-    for f in source_list:
-        shutil.copy2(os.path.join(source, f), destination)
-
-
 def copy_static_files(source, config):
-    copy_file_list(source, config['css_files'],
-                   os.path.join(source, 'site/css_files'))
-    copy_file_list(source, config['scripts_header'],
-                   os.path.join(source, 'site/scrips_header'))
-    copy_file_list(source, config['scripts_body'],
-                   os.path.join(source, 'site/scripts_body'))
+    copytree1(os.path.join(source, 'assets'),
+              os.path.join(source, 'site/assets'))
 
 
 def write_template(source, page, target, config):
