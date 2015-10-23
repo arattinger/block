@@ -4,6 +4,7 @@ import shutil
 from ast import literal_eval
 from jinja2 import Template
 
+from parsers.markdown import MarkdownParser
 
 DESCRIPTION = "Block: Easily generate your static site in seconds."
 
@@ -60,8 +61,16 @@ def copy_templates(source, destination):
 
 
 def write_template(source, page, target, config):
+    print("Writing", target)
     with open(os.path.join(source, config[page]['template_path']), 'r') as f:
         landing = f.read()
+
+    # TODO:
+    # Check for different content types. I'm assuming everything is markdown in
+    # this stage of development
+    content = MarkdownParser(
+        os.path.join(source, config[page]['content_path'])).parse()
+    # print(content)
 
     landing_template = Template(landing)
     landing_result = landing_template.render({
@@ -69,7 +78,7 @@ def write_template(source, page, target, config):
         'description': config['description'],
         'author': config['author'],
         'sitename': config['sitename'],
-        'content': "This is just a test",
+        'content': content,
         'nav_items': [],
     })
 
