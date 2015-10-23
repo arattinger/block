@@ -56,13 +56,31 @@ def copy_templates(source, destination):
     """
     if not os.path.exists(destination):
         os.makedirs(destination)
-    copytree1(source, destination)
+
+    try:
+        copytree1(source, destination)
+    except FileExistsError:
+        answer = None
+        while answer != 'y' and answer != 'n':
+            answer = input("\nIt seems like you already have assets in "
+                           "this location. \nAre you sure that you want to "
+                           "override your site? [y/n] ")
+        if answer == 'y':
+            shutil.rmtree(destination)
+            copytree1(source, destination)
+        else:
+            import sys
+            sys.exit()
+
     log("Finished copying files!", verbose_output=True)
 
 
 def copy_static_files(source, config):
-    copytree1(os.path.join(source, 'assets'),
-              os.path.join(source, 'site/assets'))
+    copy_from = os.path.join(source, 'assets')
+    destination = os.path.join(source, 'site/assets')
+
+    shutil.rmtree(destination)
+    copytree1(copy_from, destination)
 
 
 def write_template(source, page, target, config):
@@ -84,7 +102,7 @@ def write_template(source, page, target, config):
         'author': config['author'],
         'sitename': config['sitename'],
         'content': content,
-        'nav_items': [],
+        'nav_items': config['navbar'],
     })
 
     with open(os.path.join(source, target), 'w') as f:
