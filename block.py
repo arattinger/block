@@ -3,6 +3,7 @@ import os
 import shutil
 from ast import literal_eval
 from jinja2 import Template
+import sys
 
 from parsers.markdown import MarkdownParser
 
@@ -69,7 +70,6 @@ def copy_templates(source, destination):
             shutil.rmtree(destination)
             copytree1(source, destination)
         else:
-            import sys
             sys.exit()
 
     log("Finished copying files!", verbose_output=True)
@@ -89,16 +89,19 @@ def copy_static_files(source, config):
     copytree1(copy_from, destination)
 
 
-def write_template(source, page, target, config):
+def write_template(source, template_path, content_path, target, config):
     print("Writing", target)
-    with open(os.path.join(source, config[page]['template_path']), 'r') as f:
+    with open(os.path.join(source, template_path), 'r') as f:
         landing = f.read()
 
     # TODO:
     # Check for different content types. I'm assuming everything is markdown in
     # this stage of development
-    content = MarkdownParser(
-        os.path.join(source, config[page]['content_path'])).parse()
+    try:
+        content = MarkdownParser(os.path.join(source, content_path)).parse()
+    except FileNotFoundError:
+        log("Error: Please add the file: " + content_path, verbose_output=True)
+        sys.exit()
     # print(content)
 
     landing_template = Template(landing)
@@ -117,14 +120,15 @@ def write_template(source, page, target, config):
 
 def write_templates(source, config):
     # 1. Write the landing page
-    write_template(source, 'home', 'site/index.html', config)
+    write_template(source, config['home']['template_path'],
+                   config['home']['content_path'], 'site/index.html', config)
 
     # TODO
     # 2. Create all other pages
     for page in config['pages']:
         # An Interface change in write_template is needed to implement this
-        # write_template(source, )
-        pass
+        write_template(source, page['template_path'], page['content_path'],
+                       os.path.join('site', page['href']), config)
 
 
 def generate_site(source):
