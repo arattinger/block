@@ -7,6 +7,11 @@ import sys
 
 from parsers.markdown import MarkdownParser
 
+CONTENTTYPES = {
+    "MARKDOWN": "markdown",
+    "RESTRUCTURED": "restructured"
+}
+
 DESCRIPTION = "Block: Easily generate your static site in seconds."
 
 settings = {
@@ -95,14 +100,18 @@ def write_template(source, template_path, content_path, target, config):
         landing = f.read()
 
     # TODO:
-    # Check for different content types. I'm assuming everything is markdown in
-    # this stage of development
-    try:
-        content = MarkdownParser(os.path.join(source, content_path)).parse()
-    except FileNotFoundError:
-        log("Error: Please add the file: " + content_path, verbose_output=True)
+    # Check for different content types.
+    if config["template_type"] == CONTENTTYPES["MARKDOWN"]:
+        try:
+            content = MarkdownParser(os.path.join(source, content_path))\
+                .parse()
+        except FileNotFoundError:
+            log("Error: Please add the file: " + content_path,
+                verbose_output=True)
+            sys.exit()
+    elif config["template_type"] == CONTENTTYPES["RESTRUCTURED"]:
+        log("Not implemented yet", verbose_output=True)
         sys.exit()
-    # print(content)
 
     landing_template = Template(landing)
     landing_result = landing_template.render({
@@ -119,11 +128,13 @@ def write_template(source, template_path, content_path, target, config):
 
 
 def write_templates(source, config):
+    """ Parses the sites listed in config, opens the corresponding source
+    files, and as a result creates html sites.
+    """
     # 1. Write the landing page
     write_template(source, config['home']['template_path'],
                    config['home']['content_path'], 'site/index.html', config)
 
-    # TODO
     # 2. Create all other pages
     for page in config['pages']:
         # An Interface change in write_template is needed to implement this
