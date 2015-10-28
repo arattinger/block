@@ -6,10 +6,12 @@ from jinja2 import Template
 import sys
 
 from parsers.markdown import MarkdownParser
+from parsers.restructured import RSTParser
 
-CONTENTTYPES = {
-    "MARKDOWN": "markdown",
-    "RESTRUCTURED": "restructured"
+
+CONTENT_PARSER = {
+    "markdown": MarkdownParser,
+    "restructured": RSTParser,
 }
 
 DESCRIPTION = "Block: Easily generate your static site in seconds."
@@ -99,18 +101,12 @@ def write_template(source, template_path, content_path, target, config):
     with open(os.path.join(source, template_path), 'r') as f:
         landing = f.read()
 
-    # TODO:
-    # Check for different content types.
-    if config["template_type"] == CONTENTTYPES["MARKDOWN"]:
-        try:
-            content = MarkdownParser(os.path.join(source, content_path))\
-                .parse()
-        except FileNotFoundError:
-            log("Error: Please add the file: " + content_path,
-                verbose_output=True)
-            sys.exit()
-    elif config["template_type"] == CONTENTTYPES["RESTRUCTURED"]:
-        log("Not implemented yet", verbose_output=True)
+    try:
+        content = CONTENT_PARSER[config['template_type']](
+            os.path.join(source, content_path)).parse()
+    except FileNotFoundError:
+        log("Error: Please add the file: " + content_path,
+            verbose_output=True)
         sys.exit()
 
     landing_template = Template(landing)
