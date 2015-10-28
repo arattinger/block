@@ -53,8 +53,8 @@ usage: block.py [-h] [-v] [-i absolute_path | -g project_path]
 Block: Easily generate your static site in seconds.
 
 optional arguments:
--h, --help             show this help message and exit
--v, --verbose         increase output verbosity
--i absolute_path, --init absolute_path Create a new static site
--g project_path, --generate project_path Generate the static website from your source files
+* -h, --help             show this help message and exit
+* -v, --verbose         increase output verbosity
+* -i absolute_path, --init absolute_path Create a new static site
+* -g project_path, --generate project_path Generate the static website from your source files
 
