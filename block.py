@@ -117,6 +117,9 @@ def write_template(source, template_path, content_path, target, config):
         'sitename': config['sitename'],
         'content': content,
         'nav_items': config['navbar'],
+        'css_files': config['css_files'],
+        'header_scripts': config['scripts_header'],
+        'body_scripts': config['scripts_body'],
     })
 
     with open(os.path.join(source, target), 'w') as f:

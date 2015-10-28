@@ -11,13 +11,16 @@
 
 		<!-- icons -->
 		<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="shortcut icon" href="assets/img/favicon.ico">
 
-		{{ css }}
-      	{{ header_scripts }}
+		{% for css in css_files %}
+			<link rel="stylesheet" href="{{ css }}">
+		{% endfor %}
 
-		<!-- Override CSS file - add your own CSS rules -->
-		<link rel="stylesheet" href="assets/css/styles.css">
+      	{% for hscript in header_scripts %}
+      		<script type="text/javascript" src="{{ hscript }}"></script>
+      	{% endfor %}
+
 	</head>
 	<body>
 		<div class="header">
@@ -46,6 +49,8 @@
 				&copy; Copyright 2015
 			</div>
 		</div>
-		{{ body_scripts }}
+		{% for bscript in body_scripts %}
+      		<script type="text/javascript" src="{{ bscript }}"></script>
+      	{% endfor %}
 	</body>
 </html>
