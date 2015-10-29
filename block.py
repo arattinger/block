@@ -33,7 +33,7 @@ def log(status, verbose_output=False):
 def copytree1(src, dst, symlinks=False, ignore=None):
     """ This is an improved implementation for copytree (shutil), and is
     used as workaround for the copytree limitation where it doesn't copy
-    anything if the dir exists.
+    anything if the directory already exists.
 
     http://stackoverflow.com/questions/1868714/how-do-i-copy-an-entire-directory-of-files-into-an-existing-directory-using-pyth
     """
@@ -182,15 +182,11 @@ def main():
             'in the specified location',
             verbose_output=True)
         real_path = os.path.dirname(os.path.realpath(__file__))
-        # print(real_path, args.init)
         copy_templates(os.path.join(real_path, 'project_template'), args.init)
 
     elif args.generate:
         # Generate a finished site from the content specified by the user
         generate_site(args.generate)
-
-    log(args)
-    # import pdb; pdb.set_trace()
 
 
 if __name__ == '__main__':

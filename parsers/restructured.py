@@ -12,7 +12,3 @@ class RSTParser():
         self.parsed_data = publish_parts(
             self.data, writer_name="html")['html_body']
         return self.parsed_data
-
-# if __name__ == '__main__':
-    # parser = RSTParser()
-    # print('parsing finished')
